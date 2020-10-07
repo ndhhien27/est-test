@@ -1,8 +1,8 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import { createInjectorsEnhancer, forceReducerReload } from "redux-injectors";
+import { createInjectorsEnhancer } from "redux-injectors";
 import createSagaMiddleware from "redux-saga";
-import rootSaga from "../saga";
 import blogReducer from "../../features/Blog/blogSlice";
+import rootSaga from "../saga";
 
 export default function configureAppStore(initialState = {}) {
   const rootReducer = {

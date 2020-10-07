@@ -48,5 +48,5 @@ const blogSlice = createSlice({
   },
 });
 
-const { actions, name, reducer } = blogSlice;
+const { reducer } = blogSlice;
 export default reducer;

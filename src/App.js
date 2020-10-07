@@ -1,9 +1,8 @@
 import React, { lazy, Suspense } from "react";
-import logo from "./logo.svg";
+import Switch from "react-bootstrap/esm/Switch";
+import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 import AppBar from "./components/AppBar";
-import { BrowserRouter, Route } from "react-router-dom";
-import Switch from "react-bootstrap/esm/Switch";
 
 const HomeView = lazy(() => import("./features/Home/pages/Main"));
 
