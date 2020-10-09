@@ -1,24 +1,69 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { createBrowserHistory } from "history";
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import "../../App.css";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import AppBar from "../../components/AppBar";
+import MainLayout from "../layout/MainLayout";
 
 const HomeView = lazy(() => import("../../features/Home/pages/Main"));
 const BlogsView = lazy(() => import("../../features/Blog/pages/Main"));
+const BlogDetailView = lazy(() =>
+  import("../../features/Blog/pages/BlogDetail")
+);
+const NotFoundView = lazy(() => import("../layout/NotFound"));
+const ServerErrorView = lazy(() => import("../layout/ServerError"));
 
-const Router = () => {
+export const history = createBrowserHistory();
+
+const HomeRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => (
+      <MainLayout>
+        <Component {...props} />
+      </MainLayout>
+    )}
+  />
+);
+
+const PublicRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => (
+      <MainLayout>
+        <Component {...props} />
+      </MainLayout>
+    )}
+  />
+);
+
+const BlogRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => (
+      <MainLayout>
+        <Component {...props} />
+      </MainLayout>
+    )}
+  />
+);
+
+const Routers = () => {
   return (
     <Suspense fallback={<div>Loading ...</div>}>
-      <BrowserRouter>
+      <Router history={history}>
         <AppBar />
         <Switch>
-          <Route exact path="/" component={HomeView} />
-          <Route exact path="/blogs" component={BlogsView} />
+          <HomeRoute exact path="/" component={HomeView} />
+          <BlogRoute exact path="/blogs" component={BlogsView} />
+          <BlogRoute exact path="/blogs/:id" component={BlogDetailView} />
+          <BlogRoute exact path="/404" component={NotFoundView} />
+          <PublicRoute exact path="/500" component={ServerErrorView} />
+          <Redirect from="*" to="/404" />
         </Switch>
-      </BrowserRouter>
+      </Router>
     </Suspense>
   );
 };
 
-export default Router;
+export default Routers;

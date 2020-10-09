@@ -7,26 +7,13 @@ const request = axios.create({
   headers: {
     "content-type": "application/json",
   },
-  paramsSerializer: (params) => queryString.stringify(params),
+  paramsSerializer: (params) =>
+    queryString.stringify(params, { skipEmptyString: true }),
 });
 
-// request.interceptors.request.use(async (config) => {
-//   return config;
-// });
-
-// request.interceptors.response.use(
-//   (response) => {
-//     if (response && response.data) {
-//       return response.data;
-//     }
-
-//     return response;
-//   },
-//   (error) => {
-//     // Handle errors
-//     throw error;
-//   }
-// );
+request.interceptors.request.use(async (config) => {
+  return config;
+});
 
 request.interceptors.request.use(
   function (config) {
@@ -42,14 +29,18 @@ request.interceptors.request.use(
 // Add a response interceptor
 request.interceptors.response.use(
   function (response) {
+    if (response && response.data) {
+      return response.data;
+    }
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
   },
   function (error) {
+    // console.log("ERROR", error.response);
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   }
 );
 
